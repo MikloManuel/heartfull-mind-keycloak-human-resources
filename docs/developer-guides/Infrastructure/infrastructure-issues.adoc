@@ -1,0 +1,13 @@
+# ProtoStream-Schema-Generierung für Keycloak Infinispan-Modell
+
+## Problem
+Bei der Kompilierung des Keycloak-Infinispan-Moduls tritt der Fehler auf:
+`Symbol nicht gefunden: Klasse KeycloakModelSchemaImpl`
+
+## Lösung
+ProtoStream verwendet Annotation-Processing zur Code-Generierung. Die Implementierungsklassen werden in der `generate-sources`-Phase erstellt.
+
+### Schritte zur Generierung der ProtoStream-Schemaklassen
+1. Im Verzeichnis `model/infinispan` ausführen:
+   ```bash
+   mvn clean generate-sources -Dannotation.processing=true

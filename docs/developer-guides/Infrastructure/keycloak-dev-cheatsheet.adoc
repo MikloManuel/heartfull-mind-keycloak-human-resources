@@ -1,0 +1,132 @@
+= Keycloak SPI Entwicklungs- und Testanleitung
+:toc: left
+:toclevels: 3
+:sectnums:
+:imagesdir: images
+:source-highlighter: highlight.js
+
+== Überblick
+
+Diese Anleitung beschreibt verschiedene Methoden zum Entwickeln, Bauen und Testen von benutzerdefinierten Service Provider Interfaces (SPIs) für Keycloak.
+
+== Voraussetzungen
+
+* JDK 23 oder höher
+* Apache Maven 3.9+
+* Git
+* Keycloak-Quellcode
+
+== Build der SPI
+
+Zunächst muss die eigene SPI-Implementierung gebaut werden:
+
+[source,bash]
+----
+# Im SPI-Projektverzeichnis
+mvn clean install
+----
+
+Dies erstellt die JAR-Datei im `target`-Verzeichnis.
+
+== Integration in Keycloak
+
+=== Option 1: Entwicklungsmodus mit Quarkus Dev (empfohlen für schnelle Zyklen)
+
+[source,bash]
+----
+# Im Keycloak-Hauptverzeichnis
+mvn -f quarkus/server/pom.xml clean compile quarkus:dev
+----
+
+*Vorteile:*
+
+* Hot-Reload: Änderungen werden automatisch erkannt
+* Schnelle Entwicklungszyklen
+* Debugger kann einfach angeschlossen werden
+
+*Hinweis:* Im Quarkus Dev-Modus werden Änderungen am Classpath automatisch erkannt, somit werden auch Änderungen an deiner SPI sofort wirksam.
+
+=== Option 2: Deployment in eine laufende Keycloak-Instanz
+
+[source,bash]
+----
+# 1. Erstelle einen Providers-Ordner
+mkdir -p /path/to/keycloak/providers
+
+# 2. Kopiere deine SPI-JAR in diesen Ordner
+cp target/deine-spi.jar /path/to/keycloak/providers/
+
+# 3. Starte Keycloak im Entwicklungsmodus
+cd /path/to/keycloak
+bin/kc.sh start-dev
+----
+
+*Hinweis:* Bei Änderungen an deiner SPI musst du Keycloak neu starten.
+
+=== Option 3: Build als Teil von Keycloak
+
+Wenn deine SPI als Modul im Keycloak-Projekt integriert ist:
+
+[source,bash]
+----
+# Im Keycloak-Hauptverzeichnis
+mvn clean install -DskipTests -DskipTestsuite
+bin/kc.sh build
+bin/kc.sh start-dev
+----
+
+=== Option 4: Verwenden einer Distribution
+
+[source,bash]
+----
+# 1. Baue Keycloak inklusive deiner SPI
+mvn clean install -DskipTests -DskipTestsuite
+
+# 2. Wechsle zum Distribution-Verzeichnis
+cd quarkus/dist/target
+
+# 3. Entpacke die Distribution (falls nötig)
+unzip keycloak-999.0.0-SNAPSHOT.zip
+
+# 4. Konfiguriere und starte Keycloak
+cd keycloak-999.0.0-SNAPSHOT
+./bin/kc.sh build
+./bin/kc.sh start-dev
+----
+
+== Debugging und Fehlersuche
+
+=== JVM-Debugging aktivieren
+
+Um mit einem Debugger zu arbeiten:
+
+[source,bash]
+----
+# Bei Option 1 (Quarkus Dev-Modus)
+mvn -f quarkus/server/pom.xml clean compile quarkus:dev -Ddebug
+
+# Bei Option 2 oder 3 (standalone)
+./bin/kc.sh start-dev --debug
+----
+
+=== Logs überprüfen
+
+Die Logs befinden sich standardmäßig im Verzeichnis `data/log/` oder werden direkt auf der Konsole ausgegeben.
+
+=== Typische Probleme
+
+* *SPI wird nicht erkannt*: Überprüfe die META-INF/services Dateien
+* *Classloading-Probleme*: Achte auf Abhängigkeitskonflikte
+* *Datenbankverbindungsprobleme*: Prüfe die Datenbankkonfiguration
+
+== Best Practices
+
+* Nutze den Quarkus Dev-Modus für schnelle Iterationen
+* Implementiere Unit-Tests für isolierte Funktionalitätstests
+* Verwende Integrationstests für End-to-End-Validierung
+
+== Referenzen
+
+* link:https://www.keycloak.org/docs/latest/server_development/[Keycloak Server Development]
+* link:https://www.keycloak.org/docs/latest/server_development/#_providers[Keycloak Provider Development]
+----

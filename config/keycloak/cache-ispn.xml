@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="urn:infinispan:config:14.0 https://infinispan.org/schemas/infinispan-config-14.0.xsd"
+           xmlns="urn:infinispan:config:14.0">
+    <!-- Cache-Konfiguration hier -->
+    <cache-container name="keycloak">
+        <local-cache name="realms"/>
+        <local-cache name="users"/>
+        <local-cache name="sessions"/>
+        <local-cache name="authenticationSessions"/>
+        <local-cache name="offlineSessions"/>
+        <local-cache name="clientSessions"/>
+        <local-cache name="offlineClientSessions"/>
+        <local-cache name="loginFailures"/>
+        <local-cache name="work"/>
+        <local-cache name="authorization"/>
+        <local-cache name="keys"/>
+        <local-cache name="actionTokens"/>
+    </cache-container>
+</infinispan>
