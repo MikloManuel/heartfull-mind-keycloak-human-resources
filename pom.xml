@@ -23,6 +23,7 @@
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
         <version>39</version>
+        <relativePath/>
     </parent>
 
     <name>Keycloak</name>
@@ -37,9 +38,9 @@
     <properties>
         <!-- Maven -->
         <maven.version>3.9.8</maven.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
 
         <project.version.npm>999.0.0-SNAPSHOT</project.version.npm>
 
@@ -52,8 +53,8 @@
         <jboss.snapshots.repo.id>maven-snapshots</jboss.snapshots.repo.id>
         <jboss.snapshots.repo.url>https://nexus.local/repository/maven-snapshots/</jboss.snapshots.repo.url>
 
-        <quarkus.version>3.15.1</quarkus.version>
-        <quarkus.build.version>3.15.1</quarkus.build.version>
+        <quarkus.version>3.19.2</quarkus.version>
+        <quarkus.build.version>3.19.2</quarkus.build.version>
 
         <project.build-time>${timestamp}</project.build-time>
 
@@ -1819,29 +1820,6 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <gpgArguments>
-                                        <arg>--batch</arg>
-                                        <arg>--pinentry-mode</arg>
-                                        <arg>loopback</arg>
-                                    </gpgArguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <configuration>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>

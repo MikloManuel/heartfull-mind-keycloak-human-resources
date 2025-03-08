@@ -111,3 +111,8 @@ node_modules
 .java-version
 
 .env
+
+bin/
+
+# Ausnahme für die Skript-Dateien
+!integration/client-cli/admin-cli/src/main/bin/*.sh
