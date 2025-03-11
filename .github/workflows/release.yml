@@ -36,7 +36,7 @@ jobs:
       # Erst das Release erstellen
       - name: Create Initial Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             quarkus/dist/target/keycloak-*.zip
@@ -55,7 +55,7 @@ jobs:
       
       # Update das Release mit dem Docker Image
       - name: Update Release with Docker Image
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           files: quarkus/dist/target/heartfullmind-keycloak-docker-image.tar.gz
